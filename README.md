@@ -9,8 +9,6 @@ A basic mobile flash card app that allows users to hide and reveal multiple choi
 
 <img src="http://g.recordit.co/yBUBGAaOeM.gif" width=200><br>
 
-`TODO://` In the User stories section below, add an `x` between the `-[ ]` like this `- [x]` for any user story you complete. (☝️ Remove this paragraph after after checking off user stories)
-
 ## Required
 - [x] Create New Project in Android Studio
 - [x] Add a view for the front side of the flashcard to display the question
