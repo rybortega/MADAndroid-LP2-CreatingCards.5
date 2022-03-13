@@ -32,12 +32,12 @@
 
     <TextView
         android:id="@+id/flashcard_answer1"
-        android:background="@drawable/answer_card_background"
-        android:layout_below="@id/flashcard_question"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/flashcard_question"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="100dp"
+        android:background="@drawable/answer_card_background"
         android:gravity="center"
         android:text="2 valence electrons"
         android:textColor="#e07a5f"
@@ -79,5 +79,16 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:src="@drawable/do_not_see_icon_foreground" />
+
+    <ImageView
+        android:id="@+id/add_button"
+        android:layout_width="77dp"
+        android:layout_height="67dp"
+        android:layout_below="@id/flashcard_answer3"
+        android:layout_marginLeft="56dp"
+        android:layout_marginTop="47dp"
+        android:layout_toRightOf="@id/toggle_choices_visibility"
+        android:src="@drawable/add_button" />
+
 
 </RelativeLayout>

@@ -2,12 +2,19 @@ package com.example.lilliansflashcardapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.material.snackbar.Snackbar;
+
 public class MainActivity extends AppCompatActivity {
+    TextView question;
+    TextView answer1;
+    TextView answer2;
+    TextView answer3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         toggleVisibility.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(isShowingAnswers[0]) {
+                if (isShowingAnswers[0]) {
                     ((ImageView) toggleVisibility).setImageResource(R.drawable.do_not_see_icon_foreground);
                     flashcardAnswer1.setVisibility(View.VISIBLE);
                     flashcardAnswer2.setVisibility(View.VISIBLE);
@@ -77,6 +84,38 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
+        //When users tap on the add button for the flash card
+        findViewById(R.id.add_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, AddCardActivity.class);
+                MainActivity.this.startActivityForResult(intent, 100);
+            }
+        });
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        question = findViewById(R.id.flashcard_question);
+        answer1 = findViewById(R.id.flashcard_answer1);
+        answer2 = findViewById(R.id.flashcard_answer2);
+        answer3 = findViewById(R.id.flashcard_answer3);
+
+        if (requestCode == 100) {
+            if (data != null) {
+                String questionString = data.getExtras().getString("question");
+                String answer1String = data.getExtras().getString("answer1");
+                String answer2String = data.getExtras().getString("answer2");
+                String answer3String = data.getExtras().getString("answer3");
+                question.setText(questionString);
+                answer1.setText(answer1String);
+                answer2.setText(answer2String);
+                answer3.setText(answer3String);
+            }
+        }
+    }
+
+
 }
