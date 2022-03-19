@@ -8,11 +8,21 @@ import android.view.View;
 import android.widget.EditText;
 
 public class AddCardActivity extends AppCompatActivity {
+    EditText question;
+    EditText answer1;
+    EditText answer2;
+    EditText answer3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_card);
+        String currentQuestion = getIntent().getStringExtra("question edit");
+        String currentAnswer1 = getIntent().getStringExtra("answer 1 edit");
+        String currentAnswer2 = getIntent().getStringExtra("answer 1 edit");
+        String currentAnswer3 = getIntent().getStringExtra("answer 1 edit");
+
+
 
         findViewById(R.id.cancel_button).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -38,12 +48,5 @@ public class AddCardActivity extends AppCompatActivity {
                 finish();
             }
         });
-        /*
-         Intent intent = new Intent(AddCardActivity.this, MainActivity.class);
-          AddCardActivity.this.startActivityForResult(intent, 100);
-         */
-
     }
-
-
 }

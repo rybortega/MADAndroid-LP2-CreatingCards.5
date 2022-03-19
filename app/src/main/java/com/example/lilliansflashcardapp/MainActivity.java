@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        TextView flashcardQuestion = findViewById(R.id.flashcard_question);
         TextView flashcardAnswer1 = findViewById(R.id.flashcard_answer1);
         TextView flashcardAnswer2 = findViewById(R.id.flashcard_answer2);
         TextView flashcardAnswer3 = findViewById(R.id.flashcard_answer3);
@@ -90,6 +91,22 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, AddCardActivity.class);
                 MainActivity.this.startActivityForResult(intent, 100);
+            }
+        });
+
+        findViewById(R.id.edit_button).setOnClickListener(new View.OnClickListener() {
+            String questionString = flashcardQuestion.getText().toString();
+            String flashcardAnswer1String = flashcardAnswer1.getText().toString();
+            String flashcardAnswer2String = flashcardAnswer2.getText().toString();
+            String flashcardAnswer3String = flashcardAnswer3.getText().toString();
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, AddCardActivity.class);
+                intent.putExtra("question edit", questionString);
+                intent.putExtra("answer 1 edit", flashcardAnswer1String);
+                intent.putExtra("answer 2 edit", flashcardAnswer2String);
+                intent.putExtra("answer 3 edit", flashcardAnswer3String);
+                MainActivity.this.startActivityForResult(intent, 200);
             }
         });
     }
