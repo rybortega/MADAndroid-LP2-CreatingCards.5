@@ -7,7 +7,7 @@ An updated version of the basic mobile flashcard app, allowing users to create n
 
 ### App Walk-though
 
-<img src="http://g.recordit.co/26ZgDXABMt.gif" width=200><br>
+<img src="http://g.recordit.co/7b0U7d2nMZ.gif" width=200><br>
 
 ## Required
 - [x] User can create a card and still see their created card when the app is relaunched.
