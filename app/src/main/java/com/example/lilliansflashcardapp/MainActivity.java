@@ -13,6 +13,7 @@ import com.google.android.material.snackbar.Snackbar;
 import org.w3c.dom.Text;
 
 import java.util.List;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
     TextView flashcardQuestion;
@@ -135,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
                 if (allFlashcards.size() == 0) {
                     return;
                 }
+                /*
                 // advance our pointer index so we can show the next card
                 currentCardDisplayedIndex++;
                 // make sure we don't get an IndexOutOfBoundsError if we are viewing the last indexed card in our list
@@ -153,6 +155,19 @@ public class MainActivity extends AppCompatActivity {
                 flashcardAnswer1.setText(flashcard.getWrongAnswer1());
                 flashcardAnswer2.setText(flashcard.getWrongAnswer2());
                 flashcardAnswer3.setText(flashcard.getAnswer());
+                */
+                allFlashcards = flashcardDatabase.getAllCards();
+                int flashcardIndex = getRandomNumber(0, allFlashcards.size()-1);
+                while(flashcardIndex == currentCardDisplayedIndex) {
+                    flashcardIndex = getRandomNumber(0, allFlashcards.size()-1);
+                }
+                Flashcard flashcard = allFlashcards.get(flashcardIndex);
+
+                flashcardQuestion.setText(flashcard.getQuestion());
+                flashcardAnswer1.setText(flashcard.getWrongAnswer1());
+                flashcardAnswer2.setText(flashcard.getWrongAnswer2());
+                flashcardAnswer3.setText(flashcard.getAnswer());
+                currentCardDisplayedIndex = flashcardIndex;
             }
         });
 
@@ -239,6 +254,13 @@ public class MainActivity extends AppCompatActivity {
                         "Card successfully edited.", Snackbar.LENGTH_SHORT).show();
             }
         }
+    }
+
+    // returns a random number between minNumber and maxNumber, inclusive
+    public int getRandomNumber(int minNumber, int maxNumber) {
+        Random rand = new Random();
+        return rand.nextInt((maxNumber - minNumber) + 1) + minNumber;
+
     }
 
 
