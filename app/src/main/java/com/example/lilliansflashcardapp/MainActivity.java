@@ -15,10 +15,10 @@ import org.w3c.dom.Text;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    TextView question;
-    TextView answer1;
-    TextView answer2;
-    TextView answer3;
+    TextView flashcardQuestion;
+    TextView flashcardAnswer1;
+    TextView flashcardAnswer2;
+    TextView flashcardAnswer3;
     FlashcardDatabase flashcardDatabase;
     List<Flashcard> allFlashcards;
     int currentCardDisplayedIndex = 0;
@@ -28,20 +28,22 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        flashcardDatabase = new FlashcardDatabase(getApplicationContext());
-        TextView flashcardQuestion = findViewById(R.id.flashcard_question);
-        TextView flashcardAnswer1 = findViewById(R.id.flashcard_answer1);
-        TextView flashcardAnswer2 = findViewById(R.id.flashcard_answer2);
-        TextView flashcardAnswer3 = findViewById(R.id.flashcard_answer3);
+        //flashcardDatabase = new FlashcardDatabase(getApplicationContext());
+        flashcardQuestion = findViewById(R.id.flashcard_question);
+        flashcardAnswer1 = findViewById(R.id.flashcard_answer1);
+        flashcardAnswer2 = findViewById(R.id.flashcard_answer2);
+        flashcardAnswer3 = findViewById(R.id.flashcard_answer3);
 
         flashcardDatabase = new FlashcardDatabase(this);
         allFlashcards = flashcardDatabase.getAllCards();
-
+        System.out.println("current size: " + allFlashcards.size());
+        //displays the first written flashcard when being launched
         if (allFlashcards != null && allFlashcards.size() > 0) {
-            flashcardQuestion.setText(allFlashcards.get(0).getQuestion());
-            flashcardAnswer1.setText(allFlashcards.get(0).getWrongAnswer1());
-            flashcardAnswer2.setText(allFlashcards.get(0).getWrongAnswer2());
-            flashcardAnswer3.setText(allFlashcards.get(0).getAnswer());
+            Flashcard flashcard = allFlashcards.get(0);
+            flashcardQuestion.setText(flashcard.getQuestion());
+            flashcardAnswer1.setText(flashcard.getWrongAnswer1());
+            flashcardAnswer2.setText(flashcard.getWrongAnswer2());
+            flashcardAnswer3.setText(flashcard.getAnswer());
         }
 
         flashcardAnswer1.setOnClickListener(new View.OnClickListener() {
@@ -132,13 +134,14 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.next_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(allFlashcards.size() == 0) {
+                System.out.println("size rn: " + allFlashcards.size());
+                if (allFlashcards.size() == 0) {
                     return;
                 }
                 // advance our pointer index so we can show the next card
                 currentCardDisplayedIndex++;
                 // make sure we don't get an IndexOutOfBoundsError if we are viewing the last indexed card in our list
-                if(currentCardDisplayedIndex >= allFlashcards.size()) {
+                if (currentCardDisplayedIndex >= allFlashcards.size()) {
                     Snackbar.make(view,
                             "You've reached the end of the cards, going back to start.",
                             Snackbar.LENGTH_SHORT)
@@ -153,6 +156,40 @@ public class MainActivity extends AppCompatActivity {
                 flashcardAnswer1.setText(flashcard.getWrongAnswer1());
                 flashcardAnswer2.setText(flashcard.getWrongAnswer2());
                 flashcardAnswer3.setText(flashcard.getAnswer());
+                System.out.println("index of card: " + currentCardDisplayedIndex);
+            }
+        });
+
+        //When users tap on trash button on app
+        findViewById(R.id.trash_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                flashcardDatabase.deleteCard(flashcardQuestion.getText().toString());
+                allFlashcards = flashcardDatabase.getAllCards(); //update size of flashcard list
+                currentCardDisplayedIndex--; //update current displayed card index
+                //no cards present in the database after deletion
+                if (allFlashcards.size() == 0) {
+                    flashcardQuestion.setText("Add a new card!");
+                    flashcardAnswer1.setVisibility(View.INVISIBLE);
+                    flashcardAnswer2.setVisibility(View.INVISIBLE);
+                    flashcardAnswer3.setVisibility(View.INVISIBLE);
+                    currentCardDisplayedIndex = 0;
+                //a card is still present in the data base, even though currentCardDisplayedIndex is negative
+                } else if (currentCardDisplayedIndex < 0 && allFlashcards.size() > 0) {
+                    Flashcard currentFlashcard = allFlashcards.get(0);
+
+                    flashcardQuestion.setText(currentFlashcard.getQuestion());
+                    flashcardAnswer1.setText(currentFlashcard.getWrongAnswer1());
+                    flashcardAnswer2.setText(currentFlashcard.getWrongAnswer2());
+                    flashcardAnswer3.setText(currentFlashcard.getAnswer());
+                } else {
+                    Flashcard currentFlashcard = allFlashcards.get(currentCardDisplayedIndex);
+
+                    flashcardQuestion.setText(currentFlashcard.getQuestion());
+                    flashcardAnswer1.setText(currentFlashcard.getWrongAnswer1());
+                    flashcardAnswer2.setText(currentFlashcard.getWrongAnswer2());
+                    flashcardAnswer3.setText(currentFlashcard.getAnswer());
+                }
             }
         });
     }
@@ -161,11 +198,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        question = findViewById(R.id.flashcard_question);
-        answer1 = findViewById(R.id.flashcard_answer1);
-        answer2 = findViewById(R.id.flashcard_answer2);
-        answer3 = findViewById(R.id.flashcard_answer3);
-
         if (requestCode == 100) {
             if (data != null) {
                 String questionString = data.getExtras().getString("question");
@@ -173,31 +205,39 @@ public class MainActivity extends AppCompatActivity {
                 String answer2String = data.getExtras().getString("answer2");
                 String answer3String = data.getExtras().getString("answer3");
 
-                question.setText(questionString);
-                answer1.setText(answer1String);
-                answer2.setText(answer2String);
-                answer3.setText(answer3String);
+                flashcardQuestion.setText(questionString);
+                flashcardAnswer1.setText(answer1String);
+                flashcardAnswer2.setText(answer2String);
+                flashcardAnswer3.setText(answer3String);
 
-                //save flashcard data into database
-                flashcardDatabase.insertCard(new Flashcard(questionString, answer1String,
-                        answer2String, answer3String));
+                //save flashcard data into database (answer3String before other two strings to follow constructor parameters)
+                //correct answer: answerString3
+                //incorrect answers: answerString1 and answerString2
+                flashcardDatabase.insertCard(new Flashcard(questionString, answer3String, answer1String,
+                        answer2String));
                 allFlashcards = flashcardDatabase.getAllCards();
-                System.out.println("add logic used here!");
+
+                //make visible if empty state was displayed (from deleting)
+                flashcardQuestion.setVisibility(View.VISIBLE);
+                flashcardAnswer1.setVisibility(View.VISIBLE);
+                flashcardAnswer2.setVisibility(View.VISIBLE);
+                flashcardAnswer3.setVisibility(View.VISIBLE);
+
                 Snackbar.make(findViewById(R.id.flashcard_question),
                         "Card successfully created.", Snackbar.LENGTH_SHORT).show();
             }
         }
-        if(requestCode == 200) {
+        if (requestCode == 200) {
             if (data != null) {
                 String questionString = data.getExtras().getString("question");
                 String answer1String = data.getExtras().getString("answer1");
                 String answer2String = data.getExtras().getString("answer2");
                 String answer3String = data.getExtras().getString("answer3");
 
-                question.setText(questionString);
-                answer1.setText(answer1String);
-                answer2.setText(answer2String);
-                answer3.setText(answer3String);
+                flashcardQuestion.setText(questionString);
+                flashcardAnswer1.setText(answer1String);
+                flashcardAnswer2.setText(answer2String);
+                flashcardAnswer3.setText(answer3String);
 
                 Snackbar.make(findViewById(R.id.flashcard_question),
                         "Card successfully edited.", Snackbar.LENGTH_SHORT).show();

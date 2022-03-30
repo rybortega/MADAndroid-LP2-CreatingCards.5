@@ -109,5 +109,14 @@
         android:layout_marginRight="20dp"
         android:src="@drawable/next_button" />
 
+    <ImageView
+        android:id="@+id/trash_button"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/flashcard_question"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:src="@drawable/trash_button" />
+
 
 </RelativeLayout>

@@ -24,6 +24,7 @@ public class AddCardActivity extends AppCompatActivity {
         answer1 = findViewById(R.id.answer_text1);
         answer2 = findViewById(R.id.answer_text2);
         answer3 = findViewById(R.id.answer_text3);
+
         Intent currIntent = getIntent();
         if(currIntent != null) {
             String currentQuestion = getIntent().getStringExtra("question edit");
@@ -63,7 +64,6 @@ public class AddCardActivity extends AppCompatActivity {
                     toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                     toast.show();
                 } else {
-                    System.out.println("we pass by here");
                     finish();
                 }
             }
