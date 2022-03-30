@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
 
         flashcardDatabase = new FlashcardDatabase(this);
         allFlashcards = flashcardDatabase.getAllCards();
-        System.out.println("current size: " + allFlashcards.size());
         //displays the first written flashcard when being launched
         if (allFlashcards != null && allFlashcards.size() > 0) {
             Flashcard flashcard = allFlashcards.get(0);
@@ -124,7 +123,6 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("answer 1 edit", flashcardAnswer1.getText().toString());
                 intent.putExtra("answer 2 edit", flashcardAnswer2.getText().toString());
                 intent.putExtra("answer 3 edit", flashcardAnswer3.getText().toString());
-                System.out.println("we passed by here me thinks");
                 MainActivity.this.startActivityForResult(intent, 200);
             }
         });
@@ -134,7 +132,6 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.next_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("size rn: " + allFlashcards.size());
                 if (allFlashcards.size() == 0) {
                     return;
                 }
@@ -156,7 +153,6 @@ public class MainActivity extends AppCompatActivity {
                 flashcardAnswer1.setText(flashcard.getWrongAnswer1());
                 flashcardAnswer2.setText(flashcard.getWrongAnswer2());
                 flashcardAnswer3.setText(flashcard.getAnswer());
-                System.out.println("index of card: " + currentCardDisplayedIndex);
             }
         });
 
