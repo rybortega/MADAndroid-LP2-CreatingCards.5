@@ -53,17 +53,17 @@ public class AddCardActivity extends AppCompatActivity {
                 String answerText1 = ((EditText) findViewById(R.id.answer_text1)).getText().toString();
                 String answerText2 = ((EditText) findViewById(R.id.answer_text2)).getText().toString();
                 String answerText3 = ((EditText) findViewById(R.id.answer_text3)).getText().toString();
-                data.putExtra("question", questionText);
-                data.putExtra("answer1", answerText1);
-                data.putExtra("answer2", answerText2);
-                data.putExtra("answer3", answerText3);
-                setResult(RESULT_OK, data);
                 //Displays an error message if not all EditText views are populated
                 if(questionText.isEmpty() || answerText1.isEmpty() || answerText2.isEmpty() || answerText3.isEmpty()) {
                     Toast toast = Toast.makeText(getApplicationContext(), "Must enter all questions and answers!", Toast.LENGTH_SHORT);
                     toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                     toast.show();
                 } else {
+                    data.putExtra("question", questionText);
+                    data.putExtra("answer1", answerText1);
+                    data.putExtra("answer2", answerText2);
+                    data.putExtra("answer3", answerText3);
+                    setResult(RESULT_OK, data);
                     finish();
                 }
             }
