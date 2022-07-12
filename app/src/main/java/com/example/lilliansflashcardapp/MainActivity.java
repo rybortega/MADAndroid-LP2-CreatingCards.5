@@ -172,26 +172,6 @@ public class MainActivity extends AppCompatActivity {
                 if (allFlashcards.size() == 0) {
                     return;
                 }
-                /*
-                // advance our pointer index so we can show the next card
-                currentCardDisplayedIndex++;
-                // make sure we don't get an IndexOutOfBoundsError if we are viewing the last indexed card in our list
-                if (currentCardDisplayedIndex >= allFlashcards.size()) {
-                    Snackbar.make(view,
-                            "You've reached the end of the cards, going back to start.",
-                            Snackbar.LENGTH_SHORT)
-                            .show();
-                    currentCardDisplayedIndex = 0;
-                }
-                // set the question and answer TextViews with data from the database
-                allFlashcards = flashcardDatabase.getAllCards();
-                Flashcard flashcard = allFlashcards.get(currentCardDisplayedIndex);
-
-                flashcardQuestion.setText(flashcard.getQuestion());
-                flashcardAnswer1.setText(flashcard.getWrongAnswer1());
-                flashcardAnswer2.setText(flashcard.getWrongAnswer2());
-                flashcardAnswer3.setText(flashcard.getAnswer());
-                */
                 allFlashcards = flashcardDatabase.getAllCards();
                 int flashcardIndex = getRandomNumber(0, allFlashcards.size()-1);
                 while(flashcardIndex == currentCardDisplayedIndex) {
